@@ -1,6 +1,7 @@
-import { loadGetInitialProps } from 'next/dist/shared/lib/utils'
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Head from "next/head";
+import styles from "../styles/Home.module.css";
+import Search from "./Search"
+import Upload from "./Upload";
 
 export default function Home() {
   return (
@@ -15,8 +16,8 @@ export default function Home() {
         <div className={styles.logoContainer}>
           <img src="/logo.svg" className={styles.logo} />
         </div>
-		<div className={styles.pageSection}>
-			
+        <div className={styles.pageSection}>
+			<Search />
 		</div>
       </main>
 
