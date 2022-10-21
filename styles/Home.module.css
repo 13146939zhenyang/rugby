@@ -3,21 +3,22 @@
 	margin: 0;
 	width: 100vw;
 	height: 100vh;
-	background-color: #171772;
 }
 .logoContainer {
 	height: 100px;
-	background-color: #0B0B39;
+	/* background-color: #0B0B39; */
+	background-color: #171772;
 }
 .logo {
 	height: 100%;
 }
 .pageSection{
-	color: white;
+	/* color:#FFFFFF; */
 	font-weight: 400;
     font-size: 1.5rem;
 	height: calc(100vh - 100px);
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	flex-direction: column;
 }

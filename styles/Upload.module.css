@@ -1,5 +1,106 @@
+.buttonContainer {
+	width: 600px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	margin-top: 30px;
+}
 .uploadContainer {
+	/* width: 100%;
+	height: calc(100% - 100px);
+	margin: 30px; */
+	width: 600px;
+	height: 300px;
+	border-radius: 8px;
+	/* box-shadow: rgb(0 0 0 / 51%) 0px 25px 50px -25px; */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.upLoading {
+	width: 600px;
+	height: 400px;
+	background-color: #FFFFFF;
+	filter: drop-shadow(-10px -10px 10px rgb(255, 255, 255, 0.5)) drop-shadow(10px 10px 10px rgba(174, 174, 192, 0.2));
+	box-shadow: inset 2px 1px 10px rgba(0, 0, 0, 0.1);
+	border-radius: 20px;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+	border: #ffffff 2px solid;
+}
+
+.upLoading:hover {
+	cursor: pointer;
+}
+
+.upLoadFile {
+	height: 100%;
 	width: 100%;
-	margin: 30px;
-	background-color: white;
+	background: linear-gradient(to bottom, rgb(246, 243, 243), rgb(212, 236, 248));
+	border-radius: 20px;
+	display: flex;
+	position: relative;
+	z-index: 10;
+	flex-direction: column;
+	justify-content: center;
+	filter: drop-shadow(-10px -10px 10px rgb(255, 255, 255, 0.5)) drop-shadow(10px 10px 10px rgba(174, 174, 192, 0.2));
+}
+.upLoadInfomation {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	padding: 0 10px;
+}
+.upLoadSize {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 0.5em;
+	color: rgb(23, 23, 114);
+}
+.upLoadName {
+	font-size: 12px;
+	margin-bottom: 0.5em;
+	color: rgb(23, 23, 114);
+}
+.upLoadProgressBar {
+	bottom: 14px;
+	position: absolute;
+	width:100%;
+	padding: 0 10px;
+}
+.upLoadProgress {
+	border-radius: 3px;
+    box-shadow: rgb(0 0 0 / 20%) 0px 1px 3px inset;
+    bottom: 14px;
+    width: 100px;
+    background-color: rgb(23, 23, 114);
+    height: 10px;
+    transition: width 500ms ease-in-out 0s;
+    display: block;
+}
+
+.button {
+	width: 100px;
+	height: 60px;
+	background-color: #FFFFFF;
+	filter: drop-shadow(-10px -10px 10px rgb(255, 255, 255, 0.5)) drop-shadow(10px 10px 10px rgba(174, 174, 192, 0.2));
+	border-radius: 12px;
+	border: #ffffff 2px solid;
+	transition: all 0.3s ease-in-out;
+}
+.button:hover {
+	box-shadow: inset 2px 1px 10px rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+}
+
+.searchingInput {
+	width: 200px;
+	height: 30px;
+	background-color: #FFFFFF;
+	filter: drop-shadow(-10px -10px 10px rgb(255, 255, 255, 0.5)) drop-shadow(10px 10px 10px rgba(174, 174, 192, 0.2));
+	box-shadow: 5px 4px 10px rgba(0, 0, 0, 0.4);
+	border-radius: 20px;
 }

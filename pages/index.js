@@ -17,10 +17,10 @@ export default function Home() {
           <img src="/logo.svg" className={styles.logo} />
         </div>
         <div className={styles.pageSection}>
-			<Search />
+			<Upload />
+			{/* <Search /> */}
 		</div>
       </main>
-
       <footer className={styles.footer}></footer>
     </div>
   );
