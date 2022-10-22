@@ -37,8 +37,8 @@ export default function Upload() {
   return (
     <CSVReader
       onUploadAccepted={(results) => {
-        console.log("result", results);
         setUploadFile(results.data);
+		// alert("File uploaded successfully");
       }}
     >
       {({
