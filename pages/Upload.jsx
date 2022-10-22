@@ -7,27 +7,11 @@ import {
   formatFileSize,
 } from "react-papaparse";
 
-const GREY = "#CCC";
-const GREY_LIGHT = "rgba(255, 255, 255, 0.4)";
-const DEFAULT_REMOVE_HOVER_COLOR = "#A01919";
-const REMOVE_HOVER_COLOR_LIGHT = lightenDarkenColor(
-  DEFAULT_REMOVE_HOVER_COLOR,
-  40
-);
-
-const style = {
-  remove: {
-    height: 23,
-    position: "absolute",
-    right: 6,
-    top: 6,
-    width: 23,
-  },
-};
-
 export default function Upload() {
   const { CSVReader } = useCSVReader();
   const [uploadFile, setUploadFile] = useState(null);
+  const [mouseHover, setMouseHover] = useState(false);
+  const [saveMouseHover, setSaveMouseHover] = useState(false);
   useEffect(() => {
     if (uploadFile) {
       console.log("uploadFile", uploadFile);
@@ -38,7 +22,7 @@ export default function Upload() {
     <CSVReader
       onUploadAccepted={(results) => {
         setUploadFile(results.data);
-		// alert("File uploaded successfully");
+        // alert("File uploaded successfully");
       }}
     >
       {({
@@ -65,7 +49,7 @@ export default function Upload() {
                     <ProgressBar
                       style={{ backgroundColor: "rgb(23, 23, 114)" }}
                     />
-					{/* <div className={styles.upLoadProgress}></div> */}
+                    {/* <div className={styles.upLoadProgress}></div> */}
                   </div>
                 </div>
               </>
@@ -73,28 +57,38 @@ export default function Upload() {
               "Drop CSV file here or click to upload"
             )}
           </div>
-		  <div className={styles.buttonContainer}>
-		  <button
-            {...getRemoveFileProps()}
-            className={styles.button}
-            onMouseOver={(event) => {
-              event.preventDefault();
-            }}
-            onMouseOut={(event) => {
-              event.preventDefault();
-            }}
-          >
-            Remove
-          </button>
-          <button
-            onClick={
-              uploadFile ? () => console.log("yes") : () => console.log("no")
-            }
-			className={styles.button}
-          >
-            Save
-          </button>
-		  </div>
+          <div className={styles.buttonContainer}>
+            <button
+              {...getRemoveFileProps()}
+              className={mouseHover ? styles.buttonHover : styles.button}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                setMouseHover(true);
+              }}
+              onMouseUp={(e) => {
+                e.preventDefault();
+                setMouseHover(false);
+              }}
+            >
+              Remove
+            </button>
+            <button
+              onMouseDown={(e) => {
+                e.preventDefault();
+                setSaveMouseHover(true);
+              }}
+              onMouseUp={(e) => {
+                e.preventDefault();
+                setSaveMouseHover(false);
+              }}
+              onClick={
+                uploadFile ? () => console.log("yes") : () => console.log("no")
+              }
+              className={saveMouseHover ? styles.buttonHover : styles.button}
+            >
+              Save
+            </button>
+          </div>
         </>
       )}
     </CSVReader>
