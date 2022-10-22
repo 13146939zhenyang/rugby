@@ -16,6 +16,7 @@ export default function Upload() {
     if (uploadFile) {
       console.log("uploadFile", uploadFile);
     }
+	console.log("uploadFile", uploadFile);
   }, [uploadFile]);
 
   return (
@@ -64,6 +65,7 @@ export default function Upload() {
               onMouseDown={(e) => {
                 e.preventDefault();
                 setMouseHover(true);
+				setUploadFile(null);
               }}
               onMouseUp={(e) => {
                 e.preventDefault();
