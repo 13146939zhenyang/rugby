@@ -11,8 +11,7 @@ export default async function handler(req, res) {
   const fetchBody = {
     dataSource: "Cluster0",
     database: "Rugby",
-    // collection: "listingsAndReviews",
-	collection: "rugby-info",
+    collection: "rugby-info",
   };
   const baseUrl = `https://data.mongodb-api.com/app/data-eoohy/endpoint/data/v1/action`;
 
@@ -40,6 +39,17 @@ export default async function handler(req, res) {
         });
         const insertDataJson = await insertData.json();
         res.status(200).json(insertDataJson);
+        break;
+      case "DELETE":
+        const deleteData = await fetch(`${baseUrl}/deleteMany`, {
+          ...fetchOptions,
+          body: JSON.stringify({
+            ...fetchBody,
+			filter: { _id: req.body._id },
+          }),
+        });
+        const deleteDataJson = await deleteData.json();
+        res.status(200).json(deleteDataJson);
         break;
       default:
         res.status(405).end();

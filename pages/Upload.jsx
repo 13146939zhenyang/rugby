@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styles from "../styles/Upload.module.css";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import {
-  useCSVReader,
-  lightenDarkenColor,
-  formatFileSize,
-} from "react-papaparse";
+import { useCSVReader, formatFileSize } from "react-papaparse";
 
 export default function Upload() {
   const { CSVReader } = useCSVReader();
@@ -13,6 +11,14 @@ export default function Upload() {
   const [mouseHover, setMouseHover] = useState(false);
   const [saveMouseHover, setSaveMouseHover] = useState(false);
   const [insertArray, setInsertArray] = useState();
+  const toastifyOptions = {
+    position: "bottom-right",
+    autoClose: 1500,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "dark",
+    font: "20px",
+  };
   useEffect(() => {
     if (uploadFile) {
       const insertUploadFile = uploadFile.slice(1);
@@ -39,92 +45,107 @@ export default function Upload() {
       console.log("insertArray", insertArray);
     }
   }, [insertArray]);
- const saveData = async () => {
-   const response = await fetch("/api/searching", {
-     method: "POST",
-     headers: {
-       "Content-Type": "application/json",
-     },
-     body: JSON.stringify(insertArray),
-   });
-   const responseJson = await response.json();
-   console.log("responseJson", responseJson);
- };
+  const saveData = async () => {
+    const response = await fetch("/api/searching", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(insertArray),
+    });
+    const responseJson = await response.json();
+    console.log("responseJson", responseJson);
+  };
+  const removeData = async () => {
+    const response = await fetch("/api/searching", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    //   body: JSON.stringify(insertArray),
+    });
+    const responseJson = await response.json();
+    console.log("responseJson", responseJson);
+  };
 
   return (
-    <CSVReader
-      onUploadAccepted={(results) => {
-        setUploadFile(results.data);
-        // alert("File uploaded successfully");
-      }}
-    >
-      {({
-        getRootProps,
-        acceptedFile,
-        ProgressBar,
-        getRemoveFileProps,
-        Remove,
-      }) => (
-        <>
-          <div {...getRootProps()} className={styles.upLoading}>
-            {acceptedFile ? (
-              <>
-                <div className={styles.upLoadFile}>
-                  <div className={styles.upLoadInfomation}>
-                    <span className={styles.upLoadSize}>
-                      {formatFileSize(acceptedFile.size)}
-                    </span>
-                    <span className={styles.upLoadName}>
-                      {acceptedFile.name}
-                    </span>
+    <>
+      <CSVReader
+        onUploadAccepted={(results) => {
+          setUploadFile(results.data);
+          toast.success("File uploaded successfully", toastifyOptions);
+        }}
+      >
+        {({ getRootProps, acceptedFile, ProgressBar, getRemoveFileProps }) => (
+          <>
+            <div {...getRootProps()} className={styles.upLoading}>
+              {acceptedFile ? (
+                <>
+                  <div className={styles.upLoadFile}>
+                    <div className={styles.upLoadInfomation}>
+                      <span className={styles.upLoadSize}>
+                        {formatFileSize(acceptedFile.size)}
+                      </span>
+                      <span className={styles.upLoadName}>
+                        {acceptedFile.name}
+                      </span>
+                    </div>
+                    <div className={styles.upLoadProgressBar}>
+                      <ProgressBar
+                        style={{ backgroundColor: "rgb(23, 23, 114)" }}
+                      />
+                    </div>
                   </div>
-                  <div className={styles.upLoadProgressBar}>
-                    <ProgressBar
-                      style={{ backgroundColor: "rgb(23, 23, 114)" }}
-                    />
-                    {/* <div className={styles.upLoadProgress}></div> */}
-                  </div>
-                </div>
-              </>
-            ) : (
-              "Drop CSV file here or click to upload"
-            )}
-          </div>
-          <div className={styles.buttonContainer}>
-            <button
-              {...getRemoveFileProps()}
-              className={mouseHover ? styles.buttonHover : styles.button}
-              onMouseDown={(e) => {
-                e.preventDefault();
-                setMouseHover(true);
-                setUploadFile(null);
-              }}
-              onMouseUp={(e) => {
-                e.preventDefault();
-                setMouseHover(false);
-              }}
-            >
-              Remove
-            </button>
-            <button
-              onMouseDown={(e) => {
-                e.preventDefault();
-                setSaveMouseHover(true);
-              }}
-              onMouseUp={(e) => {
-                e.preventDefault();
-                setSaveMouseHover(false);
-              }}
-              onClick={
-                uploadFile ? () => saveData() : () => console.log("no")
-              }
-              className={saveMouseHover ? styles.buttonHover : styles.button}
-            >
-              Save
-            </button>
-          </div>
-        </>
-      )}
-    </CSVReader>
+                </>
+              ) : (
+                "Drop CSV file here or click to upload"
+              )}
+            </div>
+            <div className={styles.buttonContainer}>
+              <button
+                {...getRemoveFileProps()}
+                className={mouseHover ? styles.buttonHover : styles.button}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  setMouseHover(true);
+                  if (uploadFile) {
+                    setUploadFile(null);
+                    toast.success("File removed successfully", toastifyOptions);
+					removeData();
+                  } else {
+                    toast.error("No file to be removed", toastifyOptions);
+                  }
+                }}
+                onMouseUp={(e) => {
+                  e.preventDefault();
+                  setMouseHover(false);
+                }}
+              >
+                Remove
+              </button>
+              <button
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  setSaveMouseHover(true);
+                }}
+                onMouseUp={(e) => {
+                  e.preventDefault();
+                  setSaveMouseHover(false);
+                }}
+                onClick={
+                  uploadFile
+                    ? () => saveData()
+                    : () => toast.error("No file to be saved", toastifyOptions)
+                }
+                className={saveMouseHover ? styles.buttonHover : styles.button}
+              >
+                Save
+              </button>
+            </div>
+          </>
+        )}
+      </CSVReader>
+      <ToastContainer />
+    </>
   );
 }

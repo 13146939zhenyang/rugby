@@ -18,7 +18,6 @@ export default function Home() {
         </div>
         <div className={styles.pageSection}>
 			<Upload />
-			{/* <Search /> */}
 		</div>
       </main>
       <footer className={styles.footer}></footer>
