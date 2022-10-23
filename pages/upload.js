@@ -26,6 +26,23 @@ export default function Upload() {
     font: "20px",
   };
   useEffect(() => {
+	(async () => {
+		setLoading(true);
+		const response = await fetch("/api/searching", {
+		  method: "DELETE",
+		  headers: {
+			"Content-Type": "application/json",
+		  },
+		});
+		const responseJson = await response.json();
+		if (responseJson.result === 200) {
+			setLoading(false);
+		  setUploadDisable(false);
+		  setSearchButton(false);
+		}
+	  })();
+  }, []);
+  useEffect(() => {
     if (uploadFile) {
       const insertUploadFile = uploadFile.slice(1);
       console.log("insertUploadFile", insertUploadFile);

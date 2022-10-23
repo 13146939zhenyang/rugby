@@ -84,32 +84,30 @@ export default function Search() {
             ) : null}
             {searchResult && searchResult.length !== 0 ? (
               <div className={styles.searchResultContainer}>
-                <table>
-                  <div className={styles.tableContainer}>
-                    <tr key="title">
-                      <th key="fixture_mid">Fixture Mid</th>
-                      <th key="season">Season</th>
-                      <th key="competition_name">Competition Name</th>
-                      <th key="fixture_datetime">Fixture Datetime</th>
-                      <th key="fixture_round">Fixture Round</th>
-                      <th key="home_team">Home Team</th>
-                      <th key="away_team">Away Team</th>
-                    </tr>
-                    {searchResult.map((item, index) => {
-                      //   ['fixture_mid', 'season', 'competition_name', 'fixture_datetime', 'fixture_round', 'home_team', 'away_team']
-                      return (
-                        <tr key={index}>
-                          <td>{item.fixture_mid}</td>
-                          <td>{item.season}</td>
-                          <td>{item.competition_name}</td>
-                          <td>{item.fixture_datetime}</td>
-                          <td>{item.fixture_round}</td>
-                          <td>{item.home_team}</td>
-                          <td>{item.away_team}</td>
-                        </tr>
-                      );
-                    })}
-                  </div>
+                <table className={styles.tableContainer}>
+                  <tr key="title">
+                    <th key="fixture_mid">Fixture Mid</th>
+                    <th key="season">Season</th>
+                    <th key="competition_name">Competition Name</th>
+                    <th key="fixture_datetime">Fixture Datetime</th>
+                    <th key="fixture_round">Fixture Round</th>
+                    <th key="home_team">Home Team</th>
+                    <th key="away_team">Away Team</th>
+                  </tr>
+                  {searchResult.map((item, index) => {
+                    //   ['fixture_mid', 'season', 'competition_name', 'fixture_datetime', 'fixture_round', 'home_team', 'away_team']
+                    return (
+                      <tr key={index}>
+                        <td>{item.fixture_mid}</td>
+                        <td>{item.season}</td>
+                        <td>{item.competition_name}</td>
+                        <td>{item.fixture_datetime}</td>
+                        <td>{item.fixture_round}</td>
+                        <td>{item.home_team}</td>
+                        <td>{item.away_team}</td>
+                      </tr>
+                    );
+                  })}
                 </table>
               </div>
             ) : (
