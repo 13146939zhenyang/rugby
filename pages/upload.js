@@ -2,15 +2,21 @@ import React, { useState, useEffect } from "react";
 import styles from "../styles/Upload.module.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { useRouter } from 'next/router'
 import { useCSVReader, formatFileSize } from "react-papaparse";
+import { Dna } from "react-loader-spinner";
 
 export default function Upload() {
+	const router = useRouter();
   const { CSVReader } = useCSVReader();
   const [uploadFile, setUploadFile] = useState(null);
   const [mouseHover, setMouseHover] = useState(false);
   const [saveMouseHover, setSaveMouseHover] = useState(false);
+  const [searchMouseHover, setSearchMouseHover] = useState(false);
   const [insertArray, setInsertArray] = useState();
+  const [uploadDisable, setUploadDisable] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [searchButton, setSearchButton] = useState(false);
   const toastifyOptions = {
     position: "bottom-right",
     autoClose: 1500,
@@ -46,6 +52,7 @@ export default function Upload() {
     }
   }, [insertArray]);
   const saveData = async () => {
+    setLoading(true);
     const response = await fetch("/api/searching", {
       method: "POST",
       headers: {
@@ -53,31 +60,53 @@ export default function Upload() {
       },
       body: JSON.stringify(insertArray),
     });
+    setLoading(false);
     const responseJson = await response.json();
-	if (responseJson.result === 200) {
-	  toast.success("Data saved successfully", toastifyOptions);
-	}
+    if (responseJson.result === 200) {
+      toast.success("Data saved successfully", toastifyOptions);
+	  setSearchButton(true);
+    }
   };
   const removeData = async () => {
+    setLoading(true);
     const response = await fetch("/api/searching", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
     });
+    setLoading(false);
     const responseJson = await response.json();
-    if(responseJson.result === 200) {
-	  toast.success("Data removed successfully", toastifyOptions);
-	}
+    if (responseJson.result === 200) {
+      toast.success("Data removed successfully", toastifyOptions);
+      setUploadDisable(false);
+	  setSearchButton(false);
+    }
   };
 
   return (
-    <>
+    <div style={{ position: "relative" }}>
+      {!loading ? (
+        <div className={styles.loader}>
+          <Dna
+            visible={true}
+            height="100"
+            width="100"
+            ariaLabel="dna-loading"
+            wrapperStyle={{}}
+            wrapperClass="dna-wrapper"
+          />
+        </div>
+      ) : (
+        ""
+      )}
       <CSVReader
         onUploadAccepted={(results) => {
           setUploadFile(results.data);
           toast.success("File uploaded successfully", toastifyOptions);
+          setUploadDisable(true);
         }}
+        disabled={uploadDisable}
       >
         {({ getRootProps, acceptedFile, ProgressBar, getRemoveFileProps }) => (
           <>
@@ -113,7 +142,7 @@ export default function Upload() {
                   setMouseHover(true);
                   if (uploadFile) {
                     setUploadFile(null);
-					removeData();
+                    removeData();
                   } else {
                     toast.error("No file to be removed", toastifyOptions);
                   }
@@ -143,11 +172,31 @@ export default function Upload() {
               >
                 Save
               </button>
+              {searchButton ? (
+                <button
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    setSearchMouseHover(true);
+                  }}
+                  onMouseUp={(e) => {
+                    e.preventDefault();
+                    setSearchMouseHover(false);
+                  }}
+                  onClick={() => router.push("/search")}
+                  className={
+                    searchMouseHover ? styles.buttonHover : styles.button
+                  }
+                >
+                  Search
+                </button>
+              ) : (
+                ""
+              )}
             </div>
           </>
         )}
       </CSVReader>
       <ToastContainer />
-    </>
+    </div>
   );
 }

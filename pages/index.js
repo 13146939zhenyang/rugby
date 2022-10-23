@@ -1,7 +1,7 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import Search from "./Search"
-import Upload from "./Upload";
+import Search from "./search";
+import Upload from "./upload";
 
 export default function Home() {
   return (
@@ -17,8 +17,8 @@ export default function Home() {
           <img src="/logo.svg" className={styles.logo} />
         </div>
         <div className={styles.pageSection}>
-			<Upload />
-		</div>
+          <Upload />
+        </div>
       </main>
       <footer className={styles.footer}></footer>
     </div>
