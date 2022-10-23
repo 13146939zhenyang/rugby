@@ -10,8 +10,9 @@ export default async function handler(req, res) {
   };
   const fetchBody = {
     dataSource: "Cluster0",
-    database: "sample_airbnb",
-    collection: "listingsAndReviews",
+    database: "Rugby",
+    // collection: "listingsAndReviews",
+	collection: "rugby-info",
   };
   const baseUrl = `https://data.mongodb-api.com/app/data-eoohy/endpoint/data/v1/action`;
 
@@ -30,11 +31,11 @@ export default async function handler(req, res) {
         break;
       case "POST":
         const searching = req.body;
-        const insertData = await fetch(`${baseUrl}/insertOne`, {
+        const insertData = await fetch(`${baseUrl}/insertMany`, {
           ...fetchOptions,
           body: JSON.stringify({
             ...fetchBody,
-            document: searching,
+            documents: searching,
           }),
         });
         const insertDataJson = await insertData.json();

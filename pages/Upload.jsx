@@ -39,6 +39,17 @@ export default function Upload() {
       console.log("insertArray", insertArray);
     }
   }, [insertArray]);
+ const saveData = async () => {
+   const response = await fetch("/api/searching", {
+     method: "POST",
+     headers: {
+       "Content-Type": "application/json",
+     },
+     body: JSON.stringify(insertArray),
+   });
+   const responseJson = await response.json();
+   console.log("responseJson", responseJson);
+ };
 
   return (
     <CSVReader
@@ -105,7 +116,7 @@ export default function Upload() {
                 setSaveMouseHover(false);
               }}
               onClick={
-                uploadFile ? () => console.log("yes") : () => console.log("no")
+                uploadFile ? () => saveData() : () => console.log("no")
               }
               className={saveMouseHover ? styles.buttonHover : styles.button}
             >
