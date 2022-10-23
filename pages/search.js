@@ -6,30 +6,21 @@ export default function Search() {
   const [searchResult, setSearchResult] = useState();
   const [loading, setLoading] = useState(true);
   const [mouseHover, setMouseHover] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
   const [resultList, setResultList] = useState();
-  useEffect(() => {
-    (async () => {
-      const getResults = await fetch("/api/searching");
-      const getResultsJson = await getResults.json();
-      setSearchResult(getResultsJson);
-      setLoading(false);
-    })();
-  }, []);
-  useEffect(() => {
-    if (searchResult) {
-      console.log("searchResult", searchResult);
-    }
-  }, [searchResult]);
+  const [searchInput, setSearchInput] = useState();
   const handleSearch = async (e) => {
     const term = e.currentTarget.value;
-    setSearchTerm(e.currentTarget.value);
-
-    if (term.length > 2 || term.length === 0) {
+    if (term.length > 2) {
       const getSearchResult = await fetch(`/api/searching/${term}`);
       const getSearchResultJson = await getSearchResult.json();
-      setResultList(getSearchResultJson);
-	  console.log("getSearchResultJson", getSearchResultJson);
+      if (getSearchResultJson.length > 0) {
+        setResultList(getSearchResultJson);
+      } else {
+        setResultList();
+      }
+      console.log("getSearchResultJson", getSearchResultJson);
+    } else {
+      setResultList();
     }
   };
   return (
@@ -50,10 +41,15 @@ export default function Search() {
         <div className={styles.pageSection}>
           <div className={styles.searchContainer}>
             <div className={styles.searchInputContainer}>
-              <input type="text" className={styles.searchInput} onChange={(e) => handleSearch(e)}/>
-              <div className={styles.searchRelateResult}></div>
+              <input
+                type="text"
+                className={styles.searchInput}
+                onChange={(e) => handleSearch(e)}
+              />
               <button
-                className={mouseHover ? styles.buttonHover : styles.searchButton}
+                className={
+                  mouseHover ? styles.buttonHover : styles.searchButton
+                }
                 onMouseDown={(e) => {
                   e.preventDefault();
                   setMouseHover(true);
@@ -66,6 +62,21 @@ export default function Search() {
                 Search
               </button>
             </div>
+            {resultList && resultList.length !== 0 ? (
+              <div className={styles.searchRelateResult}>
+                {resultList &&
+                  resultList.map((item, index) => {
+                    return (
+                      <div
+                        className={styles.searchRelateResultItem}
+                        key={index}
+                      >
+                        {item.home_team}
+                      </div>
+                    );
+                  })}
+              </div>
+            ) : null}
             <div className={styles.searchResultContainer}></div>
           </div>
         </div>
