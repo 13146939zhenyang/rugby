@@ -27,11 +27,9 @@
 .searchContainer {
 	width: 100%;
 	max-width: 500px;
-	background-color: black;
 }
 .searchInputContainer{
 	width: 100%;
-	background-color: #FFFFFF;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;

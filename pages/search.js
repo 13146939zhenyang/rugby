@@ -4,9 +4,10 @@ import styles from "../styles/Search.module.css";
 
 export default function Search() {
   const [searchResult, setSearchResult] = useState();
-  const [resultList, setResultList] = useState();
   const [loading, setLoading] = useState(true);
   const [mouseHover, setMouseHover] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [resultList, setResultList] = useState();
   useEffect(() => {
     (async () => {
       const getResults = await fetch("/api/searching");
@@ -20,6 +21,17 @@ export default function Search() {
       console.log("searchResult", searchResult);
     }
   }, [searchResult]);
+  const handleSearch = async (e) => {
+    const term = e.currentTarget.value;
+    setSearchTerm(e.currentTarget.value);
+
+    if (term.length > 2 || term.length === 0) {
+      const getSearchResult = await fetch(`/api/searching/${term}`);
+      const getSearchResultJson = await getSearchResult.json();
+      setResultList(getSearchResultJson);
+	  console.log("getSearchResultJson", getSearchResultJson);
+    }
+  };
   return (
     <div className={styles.container}>
       <Head>
@@ -38,7 +50,7 @@ export default function Search() {
         <div className={styles.pageSection}>
           <div className={styles.searchContainer}>
             <div className={styles.searchInputContainer}>
-              <input type="text" className={styles.searchInput} />
+              <input type="text" className={styles.searchInput} onChange={(e) => handleSearch(e)}/>
               <div className={styles.searchRelateResult}></div>
               <button
                 className={mouseHover ? styles.buttonHover : styles.searchButton}
