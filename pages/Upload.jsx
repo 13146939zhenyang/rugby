@@ -54,7 +54,9 @@ export default function Upload() {
       body: JSON.stringify(insertArray),
     });
     const responseJson = await response.json();
-    console.log("responseJson", responseJson);
+	if (responseJson.result === 200) {
+	  toast.success("Data saved successfully", toastifyOptions);
+	}
   };
   const removeData = async () => {
     const response = await fetch("/api/searching", {
@@ -62,10 +64,11 @@ export default function Upload() {
       headers: {
         "Content-Type": "application/json",
       },
-    //   body: JSON.stringify(insertArray),
     });
     const responseJson = await response.json();
-    console.log("responseJson", responseJson);
+    if(responseJson.result === 200) {
+	  toast.success("Data removed successfully", toastifyOptions);
+	}
   };
 
   return (
@@ -110,7 +113,6 @@ export default function Upload() {
                   setMouseHover(true);
                   if (uploadFile) {
                     setUploadFile(null);
-                    toast.success("File removed successfully", toastifyOptions);
 					removeData();
                   } else {
                     toast.error("No file to be removed", toastifyOptions);

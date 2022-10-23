@@ -38,7 +38,7 @@ export default async function handler(req, res) {
           }),
         });
         const insertDataJson = await insertData.json();
-        res.status(200).json(insertDataJson);
+        res.status(200).json({insertDataJson, result: 200});
         break;
       case "DELETE":
         const deleteData = await fetch(`${baseUrl}/deleteMany`, {
@@ -49,7 +49,7 @@ export default async function handler(req, res) {
           }),
         });
         const deleteDataJson = await deleteData.json();
-        res.status(200).json(deleteDataJson);
+        res.status(200).json({ deleteDataJson, result: 200 });
         break;
       default:
         res.status(405).end();
