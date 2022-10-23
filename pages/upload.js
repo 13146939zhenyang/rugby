@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import styles from "../styles/Upload.module.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 import { useCSVReader, formatFileSize } from "react-papaparse";
 import { Dna } from "react-loader-spinner";
 
 export default function Upload() {
-	const router = useRouter();
+  const router = useRouter();
   const { CSVReader } = useCSVReader();
   const [uploadFile, setUploadFile] = useState(null);
   const [mouseHover, setMouseHover] = useState(false);
@@ -64,7 +64,7 @@ export default function Upload() {
     const responseJson = await response.json();
     if (responseJson.result === 200) {
       toast.success("Data saved successfully", toastifyOptions);
-	  setSearchButton(true);
+      setSearchButton(true);
     }
   };
   const removeData = async () => {
@@ -80,13 +80,13 @@ export default function Upload() {
     if (responseJson.result === 200) {
       toast.success("Data removed successfully", toastifyOptions);
       setUploadDisable(false);
-	  setSearchButton(false);
+      setSearchButton(false);
     }
   };
 
   return (
     <div style={{ position: "relative" }}>
-      {!loading ? (
+      {loading ? (
         <div className={styles.loader}>
           <Dna
             visible={true}
