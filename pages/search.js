@@ -7,8 +7,8 @@ export default function Search() {
   const [loading, setLoading] = useState(true);
   const [mouseHover, setMouseHover] = useState(false);
   const [resultList, setResultList] = useState();
-  const [searchInput, setSearchInput] = useState();
-  const handleSearch = async (e) => {
+  const handleDynamicSearch = async (e) => {
+	setSearchResult()
     const term = e.currentTarget.value;
     if (term.length > 2) {
       const getSearchResult = await fetch(`/api/searching/${term}`);
@@ -23,6 +23,10 @@ export default function Search() {
       setResultList();
     }
   };
+  const handleSearch = () =>{
+	setResultList();
+	setSearchResult(resultList);
+  }
   return (
     <div className={styles.container}>
       <Head>
@@ -44,7 +48,7 @@ export default function Search() {
               <input
                 type="text"
                 className={styles.searchInput}
-                onChange={(e) => handleSearch(e)}
+                onChange={(e) => handleDynamicSearch(e)}
               />
               <button
                 className={
@@ -58,6 +62,7 @@ export default function Search() {
                   e.preventDefault();
                   setMouseHover(false);
                 }}
+                onClick={() => handleSearch()}
               >
                 Search
               </button>
@@ -77,7 +82,39 @@ export default function Search() {
                   })}
               </div>
             ) : null}
-            <div className={styles.searchResultContainer}></div>
+            {searchResult && searchResult.length !== 0 ? (
+              <div className={styles.searchResultContainer}>
+                <table>
+                  <div className={styles.tableContainer}>
+                    <tr key="title">
+                      <th key="fixture_mid">Fixture Mid</th>
+                      <th key="season">Season</th>
+                      <th key="competition_name">Competition Name</th>
+                      <th key="fixture_datetime">Fixture Datetime</th>
+                      <th key="fixture_round">Fixture Round</th>
+                      <th key="home_team">Home Team</th>
+                      <th key="away_team">Away Team</th>
+                    </tr>
+                    {searchResult.map((item, index) => {
+                      //   ['fixture_mid', 'season', 'competition_name', 'fixture_datetime', 'fixture_round', 'home_team', 'away_team']
+                      return (
+                        <tr key={index}>
+                          <td>{item.fixture_mid}</td>
+                          <td>{item.season}</td>
+                          <td>{item.competition_name}</td>
+                          <td>{item.fixture_datetime}</td>
+                          <td>{item.fixture_round}</td>
+                          <td>{item.home_team}</td>
+                          <td>{item.away_team}</td>
+                        </tr>
+                      );
+                    })}
+                  </div>
+                </table>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </main>

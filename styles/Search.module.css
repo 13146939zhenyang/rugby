@@ -68,9 +68,6 @@
 	border: #ffffff 2px solid;
 	padding: 20px;
 }
-.searchRelateResultItem {
-
-}
 
 .searchButton {
 	width: 100px;
@@ -97,6 +94,9 @@
 }
 .searchResultContainer {
 	width: 100%;
-	max-width: 500px;
-	background-color: black;
+	font-size: 12px;
+}
+.tableContainer {
+	max-height: 200px;
+	overflow: scroll;
 }
