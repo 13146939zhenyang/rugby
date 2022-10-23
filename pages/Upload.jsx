@@ -12,12 +12,33 @@ export default function Upload() {
   const [uploadFile, setUploadFile] = useState(null);
   const [mouseHover, setMouseHover] = useState(false);
   const [saveMouseHover, setSaveMouseHover] = useState(false);
+  const [insertArray, setInsertArray] = useState();
   useEffect(() => {
     if (uploadFile) {
-      console.log("uploadFile", uploadFile);
+      const insertUploadFile = uploadFile.slice(1);
+      console.log("insertUploadFile", insertUploadFile);
+      //   ['fixture_mid', 'season', 'competition_name', 'fixture_datetime', 'fixture_round', 'home_team', 'away_team']
+      let currentArray = [];
+      insertUploadFile.map((item) => {
+        const insertItem = {
+          fixture_mid: item[0],
+          season: item[1],
+          competition_name: item[2],
+          fixture_datetime: item[3],
+          fixture_round: item[4],
+          home_team: item[5],
+          away_team: item[6],
+        };
+        currentArray.push(insertItem);
+      });
+      setInsertArray(currentArray);
     }
-	console.log("uploadFile", uploadFile);
   }, [uploadFile]);
+  useEffect(() => {
+    if (insertArray) {
+      console.log("insertArray", insertArray);
+    }
+  }, [insertArray]);
 
   return (
     <CSVReader
@@ -65,7 +86,7 @@ export default function Upload() {
               onMouseDown={(e) => {
                 e.preventDefault();
                 setMouseHover(true);
-				setUploadFile(null);
+                setUploadFile(null);
               }}
               onMouseUp={(e) => {
                 e.preventDefault();
